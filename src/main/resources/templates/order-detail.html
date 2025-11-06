@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(title='Order Details', content=~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/orders}">Orders</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+            </ol>
+        </nav>
+        
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <i class="fas fa-check-circle"></i> <span th:text="${successMessage}">Success</span>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mb-4">Order #<span th:text="${order.id}">123</span></h1>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Order Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Order Date:</strong> 
+                                   <span th:text="${#temporals.format(order.orderedAt, 'MMM dd, yyyy HH:mm')}">Date</span></p>
+                                <p><strong>Status:</strong> 
+                                   <span class="badge" 
+                                         th:classappend="${order.status == T(mjyuu.vocaloidshop.entity.OrderStatus).DELIVERED} ? 'bg-success' : 
+                                                          ${order.status == T(mjyuu.vocaloidshop.entity.OrderStatus).CANCELED} ? 'bg-danger' : 'bg-warning'"
+                                         th:text="${order.status}">Status</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Total Amount:</strong> 
+                                   <span class="h5 text-primary" th:text="'$' + ${order.totalAmount}">$0.00</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Order Items</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3 pb-3 border-bottom" th:each="item : ${order.items}">
+                            <div class="col-md-2">
+                                <img th:src="${item.product.imageUrl}" class="img-fluid rounded" 
+                                     alt="Product" onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'">
+                            </div>
+                            <div class="col-md-6">
+                                <h6 th:text="${item.product.name}">Product Name</h6>
+                                <p class="text-muted mb-0" th:text="'Price: $' + ${item.price}">$0.00</p>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <p class="mb-0">Quantity</p>
+                                <strong th:text="${item.quantity}">1</strong>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <p class="mb-0">Subtotal</p>
+                                <strong th:text="'$' + ${item.price * item.quantity}">$0.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-3" th:if="${order.shipRecipientName}">
+                    <div class="card-header">
+                        <h5 class="mb-0">Shipping Address</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong th:text="${order.shipRecipientName}">Name</strong></p>
+                        <p class="mb-1" th:text="${order.shipLine1}">Address Line 1</p>
+                        <p class="mb-1" th:if="${order.shipLine2}" th:text="${order.shipLine2}">Address Line 2</p>
+                        <p class="mb-1" th:text="${order.shipCity} + ', ' + ${order.shipState} + ' ' + ${order.shipPostalCode}">
+                            City, State ZIP
+                        </p>
+                        <p class="mb-1" th:text="${order.shipCountry}">Country</p>
+                        <p class="mb-0" th:text="'Phone: ' + ${order.shipPhone}">Phone</p>
+                    </div>
+                </div>
+                
+                <a th:href="@{/orders}" class="btn btn-outline-secondary w-100">
+                    Back to Orders
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(title='Checkout', content=~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="container mt-4">
+        <h1 class="mb-4">Checkout</h1>
+        
+        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">
+            Error message
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Shipping Address</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/checkout/place-order}" method="post">
+                            <div th:if="${!addresses.empty}">
+                                <div class="mb-3" th:each="address : ${addresses}">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="addressId" 
+                                               th:id="'address' + ${address.id}" th:value="${address.id}"
+                                               th:checked="${address.isDefault}">
+                                        <label class="form-check-label" th:for="'address' + ${address.id}">
+                                            <strong th:text="${address.recipientName}">Name</strong><br>
+                                            <span th:text="${address.line1}">Address Line 1</span><br>
+                                            <span th:if="${address.line2}" th:text="${address.line2}">Address Line 2</span>
+                                            <span th:if="${address.line2}"><br></span>
+                                            <span th:text="${address.city} + ', ' + ${address.state} + ' ' + ${address.postalCode}">City, State ZIP</span><br>
+                                            <span th:text="${address.phone}">Phone</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:if="${addresses.empty}" class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                No addresses found. Please <a th:href="@{/profile}">add an address</a> first.
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg mt-3" 
+                                    th:disabled="${addresses.empty}">
+                                Place Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:each="item : ${cartItems}" class="mb-2 pb-2 border-bottom">
+                            <div class="d-flex justify-content-between">
+                                <span th:text="${item.product.name}">Product</span>
+                                <span>×<span th:text="${item.quantity}">1</span></span>
+                            </div>
+                            <small class="text-muted" th:text="'$' + ${item.price} + ' each'">Price</small>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total:</strong>
+                            <strong class="text-primary h5" th:text="'$' + ${cartTotal}">$0.00</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

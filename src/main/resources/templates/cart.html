@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(title='Shopping Cart', content=~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="container mt-4">
+        <h1 class="mb-4">Shopping Cart</h1>
+        
+        <div th:if="${cartItems.empty}" class="alert alert-info text-center">
+            <i class="fas fa-shopping-cart"></i> Your cart is empty.
+            <br><a th:href="@{/products}" class="btn btn-primary mt-3">Continue Shopping</a>
+        </div>
+        
+        <div th:unless="${cartItems.empty}">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card mb-3" th:each="item : ${cartItems}">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <img th:src="${item.product.imageUrl}" class="img-fluid rounded" 
+                                         alt="Product" style="height: 80px; object-fit: cover;"
+                                         onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'">
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 th:text="${item.product.name}">Product Name</h5>
+                                    <p class="text-muted mb-0" th:text="'$' + ${item.price}">$0.00</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <form th:action="@{/cart/update}" method="post" class="d-flex align-items-center">
+                                        <input type="hidden" name="itemId" th:value="${item.id}">
+                                        <label class="me-2 mb-0">Qty:</label>
+                                        <input type="number" class="form-control form-control-sm" 
+                                               name="quantity" th:value="${item.quantity}" 
+                                               min="1" style="width: 70px;">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2">
+                                            Update
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <strong th:text="'$' + ${item.price * item.quantity}">$0.00</strong>
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <form th:action="@{/cart/remove}" method="post">
+                                        <input type="hidden" name="itemId" th:value="${item.id}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Order Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Subtotal:</span>
+                                <strong th:text="'$' + ${cartTotal}">$0.00</strong>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Total:</strong>
+                                <strong class="text-primary h5" th:text="'$' + ${cartTotal}">$0.00</strong>
+                            </div>
+                            <a th:href="@{/checkout}" class="btn btn-primary w-100 btn-lg">
+                                Proceed to Checkout
+                            </a>
+                        </div>
+                    </div>
+                    <a th:href="@{/products}" class="btn btn-outline-secondary w-100 mt-3">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(title='Product Details', content=~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/products}">Products</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Product</li>
+            </ol>
+        </nav>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <img th:src="${product.imageUrl}" class="img-fluid rounded shadow" alt="Product Image"
+                     onerror="this.src='https://via.placeholder.com/500x500?text=No+Image'">
+            </div>
+            
+            <div class="col-md-6">
+                <h1 class="mb-3" th:text="${product.name}">Product Name</h1>
+                <p class="text-muted mb-3" th:text="${product.category.name}">Category</p>
+                <h2 class="text-primary mb-4" th:text="'$' + ${product.price}">$0.00</h2>
+                
+                <p class="lead" th:text="${product.description}">Product description goes here...</p>
+                
+                <div class="mb-4">
+                    <span class="badge" 
+                          th:classappend="${product.stockQuantity > 0} ? 'bg-success' : 'bg-danger'"
+                          th:text="${product.stockQuantity > 0} ? 'In Stock: ' + ${product.stockQuantity} : 'Out of Stock'">
+                        Stock Status
+                    </span>
+                </div>
+                
+                <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" 
+                                   value="1" min="1" th:max="${product.stockQuantity}">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg" 
+                            th:disabled="${product.stockQuantity <= 0}">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </form>
+                
+                <div sec:authorize="!isAuthenticated()" class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle"></i> Please <a th:href="@{/login}">login</a> to add items to cart.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="mt-5">
+            <h3 class="mb-4">Related Products</h3>
+            <div class="row">
+                <div class="col-md-3 mb-4" th:each="related : ${relatedProducts}">
+                    <div class="card h-100 shadow-sm">
+                        <img th:src="${related.imageUrl}" class="card-img-top" alt="Product Image"
+                             style="height: 200px; object-fit: cover;"
+                             onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
+                        <div class="card-body">
+                            <h6 class="card-title" th:text="${related.name}">Product</h6>
+                            <p class="h6 text-primary" th:text="'$' + ${related.price}">$0.00</p>
+                            <a th:href="@{/products/{id}(id=${related.id})}" class="btn btn-sm btn-outline-primary w-100">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
