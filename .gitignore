@@ -1,0 +1,19 @@
+target/
+.mvn/
+.git/
+.gitignore
+.env
+*.log
+*.iml
+.idea/
+.vscode/
+.DS_Store
+docker-compose*.yml
+# Dockerfile  # COMMENTED OUT - needed for EB deployment!
+.dockerignore
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+extracted-app.jar
