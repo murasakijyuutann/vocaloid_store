@@ -57,6 +57,7 @@ public class OrderService {
                 .user(user)
                 .orderedAt(LocalDateTime.now())
                 .totalAmount(totalAmount)
+                .totalPrice(totalAmount)  // Set totalPrice to same value as totalAmount
                 .items(orderItems)
                 .status(OrderStatus.PENDING);
         

@@ -29,6 +29,9 @@ public class Order {
     @Column(name = "total_amount", nullable = false)
     private Integer totalAmount;
     
+    @Column(name = "total_price", nullable = false)
+    private Integer totalPrice;
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
