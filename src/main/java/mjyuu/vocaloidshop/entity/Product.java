@@ -35,4 +35,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+    
+    // Helper method to get price in dollars (converts from cents)
+    public double getPriceInDollars() {
+        return price != null ? price / 100.0 : 0.0;
+    }
 }

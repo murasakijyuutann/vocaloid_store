@@ -31,4 +31,14 @@ public class CartItem {
     
     @Column(nullable = false)
     private Integer price;
+    
+    // Helper method to get price in dollars (converts from cents)
+    public double getPriceInDollars() {
+        return price != null ? price / 100.0 : 0.0;
+    }
+    
+    // Helper method to get subtotal in dollars
+    public double getSubtotalInDollars() {
+        return getPriceInDollars() * quantity;
+    }
 }

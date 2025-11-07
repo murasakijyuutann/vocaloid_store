@@ -87,4 +87,9 @@ public class Order {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+    
+    // Helper method to get total amount in dollars (converts from cents)
+    public double getTotalAmountInDollars() {
+        return totalAmount != null ? totalAmount / 100.0 : 0.0;
+    }
 }

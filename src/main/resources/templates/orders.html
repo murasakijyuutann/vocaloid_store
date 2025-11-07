@@ -26,12 +26,11 @@
                         </div>
                         <div class="col-md-3">
                             <span class="badge" 
-                                  th:classappend="${order.status == T(mjyuu.vocaloidshop.entity.OrderStatus).DELIVERED} ? 'bg-success' : 
-                                                   ${order.status == T(mjyuu.vocaloidshop.entity.OrderStatus).CANCELED} ? 'bg-danger' : 'bg-warning'"
+                                  th:classappend="${order.status.name() == 'DELIVERED'} ? 'bg-success' : (${order.status.name() == 'CANCELED'} ? 'bg-danger' : 'bg-warning')"
                                   th:text="${order.status}">Status</span>
                         </div>
                         <div class="col-md-3 text-end">
-                            <strong class="text-primary" th:text="'$' + ${order.totalAmount}">$0.00</strong>
+                            <strong class="text-primary" th:text="'$' + ${#numbers.formatDecimal(order.totalAmountInDollars, 1, 2)}">$0.00</strong>
                         </div>
                     </div>
                 </div>
@@ -43,7 +42,7 @@
                                 <li th:each="item : ${order.items}">
                                     <span th:text="${item.product.name}">Product</span> 
                                     × <span th:text="${item.quantity}">1</span>
-                                    <small class="text-muted" th:text="'($' + ${item.price} + ' each)'">Price</small>
+                                    <small class="text-muted" th:text="'($' + ${#numbers.formatDecimal(item.priceInDollars, 1, 2)} + ' each)'">Price</small>
                                 </li>
                             </ul>
                         </div>
