@@ -11,14 +11,14 @@ spring:
     url: ${DB_URL:jdbc:mysql://localhost:3306/vocalocart?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:changeme}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
 
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:update}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
         format_sql: true
     show-sql: true
   
