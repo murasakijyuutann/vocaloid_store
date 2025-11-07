@@ -1,0 +1,10 @@
+.git
+.gitignore
+README.md
+docker-templates/
+extracted-jar/
+src/
+.DS_Store
+*.log
+.vscode/
+.idea/
