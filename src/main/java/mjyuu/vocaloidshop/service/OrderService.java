@@ -60,6 +60,7 @@ public class OrderService {
                 .items(orderItems)
                 .status(OrderStatus.PENDING);
         
+        // Only set shipping info if address is provided
         if (addressId != null) {
             Address address = addressRepository.findById(addressId)
                     .orElseThrow(() -> new RuntimeException("Address not found"));
@@ -77,6 +78,16 @@ public class OrderService {
                     .shipPostalCode(address.getPostalCode())
                     .shipCountry(address.getCountry())
                     .shipPhone(address.getPhone());
+        } else {
+            // Use user's default info if no address provided
+            orderBuilder
+                    .shipRecipientName(user.getName())
+                    .shipLine1("Address not provided")
+                    .shipCity("N/A")
+                    .shipState("N/A")
+                    .shipPostalCode("00000")
+                    .shipCountry("N/A")
+                    .shipPhone("N/A");
         }
         
         Order order = orderBuilder.build();
