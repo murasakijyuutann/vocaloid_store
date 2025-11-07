@@ -141,18 +141,15 @@
                         </thead>
                         <tbody>
                             <tr th:each="order : ${recentOrders}">
-                                <td class="px-4 py-3 fw-bold" th:text="'#' + ${order.id}">#1</td>
-                                <td th:text="${order.user.name}">Customer Name</td>
-                                <td class="fw-bold" style="color: #667eea;" th:text="'¥' + ${#numbers.formatInteger(order.totalAmount, 1, 'COMMA')}">¥0</td>
+                                <td class="px-4 py-3 fw-bold" th:text="${'#' + order.id}">#1</td>
+                                <td th:text="${order.user != null ? order.user.name : 'Unknown'}">Customer Name</td>
+                                <td class="fw-bold" style="color: #667eea;" th:text="${'¥' + #numbers.formatInteger(order.totalAmount, 1, 'COMMA')}">¥0</td>
                                 <td>
                                     <span class="badge rounded-pill px-3 py-2"
-                                          th:classappend="${order.status.name() == 'PENDING'} ? 'bg-warning' : 
-                                                         ${order.status.name() == 'PROCESSING'} ? 'bg-info' : 
-                                                         ${order.status.name() == 'SHIPPED'} ? 'bg-primary' : 
-                                                         ${order.status.name() == 'DELIVERED'} ? 'bg-success' : 'bg-danger'"
+                                          th:classappend="${order.status != null ? (order.status.name() == 'PENDING' ? 'bg-warning' : (order.status.name() == 'PROCESSING' ? 'bg-info' : (order.status.name() == 'SHIPPED' ? 'bg-primary' : (order.status.name() == 'DELIVERED' ? 'bg-success' : 'bg-danger')))) : 'bg-secondary'}"
                                           th:text="${order.status}">Status</span>
                                 </td>
-                                <td th:text="${#temporals.format(order.createdAt, 'MMM dd, yyyy')}">Date</td>
+                                <td th:text="${order.orderedAt != null ? #temporals.format(order.orderedAt, 'MMM dd, yyyy') : (order.createdAt != null ? #temporals.format(order.createdAt, 'MMM dd, yyyy') : '-')}">Date</td>
                                 <td>
                                     <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-sm" 
                                        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 8px; font-weight: 600;">
