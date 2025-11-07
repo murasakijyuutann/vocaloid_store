@@ -22,7 +22,7 @@
             <div class="col-md-6">
                 <h1 class="mb-3" th:text="${product.name}">Product Name</h1>
                 <p class="text-muted mb-3" th:text="${product.category.name}">Category</p>
-                <h2 class="text-primary mb-4" th:text="'$' + ${product.price}">$0.00</h2>
+                <h2 class="text-primary mb-4" th:text="'$' + ${#numbers.formatDecimal(product.priceInDollars, 1, 2)}">$0.00</h2>
                 
                 <p class="lead" th:text="${product.description}">Product description goes here...</p>
                 
@@ -66,7 +66,7 @@
                              onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
                         <div class="card-body">
                             <h6 class="card-title" th:text="${related.name}">Product</h6>
-                            <p class="h6 text-primary" th:text="'$' + ${related.price}">$0.00</p>
+                            <p class="h6 text-primary" th:text="'$' + ${#numbers.formatDecimal(related.priceInDollars, 1, 2)}">$0.00</p>
                             <a th:href="@{/products/{id}(id=${related.id})}" class="btn btn-sm btn-outline-primary w-100">
                                 View
                             </a>

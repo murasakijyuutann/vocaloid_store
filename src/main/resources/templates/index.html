@@ -184,7 +184,7 @@
                         </p>
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="product-price" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$0.00</span>
+                                <span class="product-price" th:text="'$' + ${#numbers.formatDecimal(product.priceInDollars, 1, 2)}">$0.00</span>
                                 <span class="badge bg-light text-dark" style="border-radius: 20px; padding: 0.5rem 1rem;">
                                     <i class="fas fa-box me-1"></i><span th:text="${product.stockQuantity}">0</span> in stock
                                 </span>

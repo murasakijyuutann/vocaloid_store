@@ -115,7 +115,7 @@
                                 <td>
                                     <span class="badge bg-light text-dark px-3 py-2" th:text="${product.category.name}">Category</span>
                                 </td>
-                                <td class="fw-bold" style="color: #667eea;" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$0.00</td>
+                                <td class="fw-bold" style="color: #667eea;" th:text="'$' + ${#numbers.formatDecimal(product.priceInDollars, 1, 2)}">$0.00</td>
                                 <td>
                                     <span class="badge px-3 py-2"
                                           th:classappend="${product.stockQuantity > 10} ? 'bg-success' : ${product.stockQuantity > 0} ? 'bg-warning' : 'bg-danger'"
