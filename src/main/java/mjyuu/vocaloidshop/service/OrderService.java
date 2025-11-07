@@ -58,7 +58,7 @@ public class OrderService {
                 .orderedAt(LocalDateTime.now())
                 .totalAmount(totalAmount)
                 .items(orderItems)
-                .status(OrderStatus.PAYMENT_RECEIVED);
+                .status(OrderStatus.PENDING);
         
         if (addressId != null) {
             Address address = addressRepository.findById(addressId)
@@ -99,21 +99,21 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         
-        if (nextStatus == OrderStatus.CANCELED) {
-            order.setStatus(OrderStatus.CANCELED);
+        if (nextStatus == OrderStatus.CANCELLED) {
+            order.setStatus(OrderStatus.CANCELLED);
             return order;
         }
         
         OrderStatus currentStatus = order.getStatus();
         if (currentStatus == null) {
-            order.setStatus(OrderStatus.PAYMENT_RECEIVED);
-            currentStatus = OrderStatus.PAYMENT_RECEIVED;
+            order.setStatus(OrderStatus.PENDING);
+            currentStatus = OrderStatus.PENDING;
         }
         
         int currentIndex = indexOf(currentStatus);
         int nextIndex = indexOf(nextStatus);
         
-        if (nextIndex < currentIndex && nextStatus != OrderStatus.CANCELED) {
+        if (nextIndex < currentIndex && nextStatus != OrderStatus.CANCELLED) {
             throw new RuntimeException("Cannot revert order status to previous stage");
         }
         
@@ -123,13 +123,11 @@ public class OrderService {
 
     private int indexOf(OrderStatus status) {
         return switch (status) {
-            case PAYMENT_RECEIVED -> 0;
+            case PENDING -> 0;
             case PROCESSING -> 1;
-            case PREPARING -> 2;
-            case READY_FOR_DELIVERY -> 3;
-            case IN_DELIVERY -> 4;
-            case DELIVERED -> 5;
-            case CANCELED -> 6;
+            case SHIPPED -> 2;
+            case DELIVERED -> 3;
+            case CANCELLED -> 4;
         };
     }
 

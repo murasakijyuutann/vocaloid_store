@@ -3,48 +3,168 @@
       th:replace="~{layout :: layout(title='Shopping Cart', content=~{::content})}">
 <body>
 <div th:fragment="content">
-    <div class="container mt-4">
-        <h1 class="mb-4">Shopping Cart</h1>
+    <style>
+        .cart-header {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 3rem 0;
+            margin: -2rem -15px 3rem;
+        }
         
-        <div th:if="${cartItems.empty}" class="alert alert-info text-center">
-            <i class="fas fa-shopping-cart"></i> Your cart is empty.
-            <br><a th:href="@{/products}" class="btn btn-primary mt-3">Continue Shopping</a>
+        .cart-item-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+        }
+        
+        .cart-item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .cart-summary-card {
+            border: none;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 100px;
+        }
+        
+        .cart-summary-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+        }
+        
+        .qty-input {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .qty-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        }
+        
+        .update-btn {
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .remove-btn {
+            border-radius: 10px;
+            border: 2px solid #dc3545;
+            background: white;
+            color: #dc3545;
+            transition: all 0.3s ease;
+            padding: 0.4rem 0.8rem;
+        }
+        
+        .remove-btn:hover {
+            background: #dc3545;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .checkout-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 1.2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.5);
+        }
+        
+        .empty-cart-icon {
+            font-size: 5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    
+    <div class="cart-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-2" style="font-family: 'Poppins', sans-serif;">
+                <i class="fas fa-shopping-cart me-3"></i>Shopping Cart
+            </h1>
+            <p class="lead text-muted">Review and manage your items</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div th:if="${cartItems.empty}" class="text-center py-5">
+            <div class="empty-cart-icon mb-4">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3 class="fw-bold mb-3">Your cart is empty</h3>
+            <p class="text-muted mb-4">Looks like you haven't added any items to your cart yet</p>
+            <a th:href="@{/products}" class="btn btn-lg" 
+               style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 50px; padding: 1rem 3rem; font-weight: 600;">
+                <i class="fas fa-store me-2"></i>Start Shopping
+            </a>
         </div>
         
         <div th:unless="${cartItems.empty}">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="card mb-3" th:each="item : ${cartItems}">
-                        <div class="card-body">
+                    <div class="cart-item-card" th:each="item : ${cartItems}">
+                        <div class="card-body p-4">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <img th:src="${item.product.imageUrl}" class="img-fluid rounded" 
-                                         alt="Product" style="height: 80px; object-fit: cover;"
-                                         onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'">
+                                <div class="col-md-2 mb-3 mb-md-0">
+                                    <img th:src="${item.product.imageUrl}" class="img-fluid rounded-3" 
+                                         alt="Product" style="height: 100px; width: 100px; object-fit: cover;"
+                                         onerror="this.src='https://via.placeholder.com/100x100/667eea/ffffff?text=Product'">
                                 </div>
-                                <div class="col-md-4">
-                                    <h5 th:text="${item.product.name}">Product Name</h5>
-                                    <p class="text-muted mb-0" th:text="'$' + ${item.price}">$0.00</p>
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <h5 class="fw-bold mb-2" th:text="${item.product.name}">Product Name</h5>
+                                    <p class="text-muted mb-1">
+                                        <span style="font-weight: 600; color: #667eea;" th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}">$0.00</span>
+                                        <span class="text-muted small"> per item</span>
+                                    </p>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 mb-3 mb-md-0">
                                     <form th:action="@{/cart/update}" method="post" class="d-flex align-items-center">
                                         <input type="hidden" name="itemId" th:value="${item.id}">
-                                        <label class="me-2 mb-0">Qty:</label>
-                                        <input type="number" class="form-control form-control-sm" 
+                                        <label class="me-2 mb-0 fw-600 small">Qty:</label>
+                                        <input type="number" class="form-control form-control-sm qty-input" 
                                                name="quantity" th:value="${item.quantity}" 
                                                min="1" style="width: 70px;">
-                                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2">
-                                            Update
+                                        <button type="submit" class="btn btn-sm update-btn ms-2">
+                                            <i class="fas fa-sync-alt"></i>
                                         </button>
                                     </form>
                                 </div>
-                                <div class="col-md-2 text-end">
-                                    <strong th:text="'$' + ${item.price * item.quantity}">$0.00</strong>
+                                <div class="col-md-2 text-center mb-3 mb-md-0">
+                                    <div class="fw-bold" style="font-size: 1.2rem; color: #667eea;" 
+                                         th:text="'$' + ${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">$0.00</div>
+                                    <small class="text-muted">Total</small>
                                 </div>
                                 <div class="col-md-1 text-end">
                                     <form th:action="@{/cart/remove}" method="post">
                                         <input type="hidden" name="itemId" th:value="${item.id}">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <button type="submit" class="btn btn-sm remove-btn">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -55,27 +175,38 @@
                 </div>
                 
                 <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">Order Summary</h5>
+                    <div class="card cart-summary-card">
+                        <div class="cart-summary-header text-white">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="fas fa-file-invoice-dollar me-2"></i>Order Summary
+                            </h5>
                         </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-3">
-                                <span>Subtotal:</span>
-                                <strong th:text="'$' + ${cartTotal}">$0.00</strong>
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                                <span class="text-muted">Subtotal:</span>
+                                <strong style="font-size: 1.1rem;" th:text="'$' + ${#numbers.formatDecimal(cartTotal, 1, 2)}">$0.00</strong>
                             </div>
-                            <hr>
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Total:</strong>
-                                <strong class="text-primary h5" th:text="'$' + ${cartTotal}">$0.00</strong>
+                            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                                <span class="text-muted">Shipping:</span>
+                                <strong class="text-success">FREE</strong>
                             </div>
-                            <a th:href="@{/checkout}" class="btn btn-primary w-100 btn-lg">
-                                Proceed to Checkout
+                            <div class="d-flex justify-content-between mb-4">
+                                <strong style="font-size: 1.2rem;">Total:</strong>
+                                <strong class="h4 mb-0" 
+                                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" 
+                                        th:text="'$' + ${#numbers.formatDecimal(cartTotal, 1, 2)}">$0.00</strong>
+                            </div>
+                            <a th:href="@{/checkout}" class="btn btn-primary checkout-btn w-100 mb-3">
+                                <i class="fas fa-lock me-2"></i>Secure Checkout
                             </a>
+                            <div class="text-center small text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>SSL Secure Payment
+                            </div>
                         </div>
                     </div>
-                    <a th:href="@{/products}" class="btn btn-outline-secondary w-100 mt-3">
-                        Continue Shopping
+                    <a th:href="@{/products}" class="btn btn-outline-secondary w-100 mt-3" 
+                       style="border-radius: 15px; border-width: 2px; font-weight: 600; padding: 0.75rem;">
+                        <i class="fas fa-arrow-left me-2"></i>Continue Shopping
                     </a>
                 </div>
             </div>

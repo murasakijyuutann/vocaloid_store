@@ -38,6 +38,7 @@ public class User implements UserDetails {
     
     private String address;
     
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;

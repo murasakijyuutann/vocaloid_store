@@ -36,7 +36,23 @@ public class Order {
     @Column(name = "ordered_at")
     private LocalDateTime orderedAt;
     
-    // Shipping address fields
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+    
+    // Shipping address fields - matching checkout form
+    @Column(name = "shipping_address")
+    private String shippingAddress;
+    
+    @Column(name = "shipping_city")
+    private String shippingCity;
+    
+    @Column(name = "shipping_zip_code")
+    private String shippingZipCode;
+    
+    // Legacy fields for backward compatibility
     private String shipRecipientName;
     private String shipLine1;
     private String shipLine2;
@@ -50,10 +66,25 @@ public class Order {
     @Builder.Default
     private List<OrderItem> items = new ArrayList<>();
     
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<OrderItem> orderItems = new ArrayList<>();
+    
     @PrePersist
     protected void onCreate() {
         if (orderedAt == null) {
             orderedAt = LocalDateTime.now();
         }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (updatedAt == null) {
+            updatedAt = LocalDateTime.now();
+        }
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

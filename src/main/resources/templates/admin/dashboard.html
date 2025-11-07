@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(title='Admin Dashboard', content=~{::content})}">
+<body>
+<div th:fragment="content">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem 0;
+            margin: -2rem -15px 3rem;
+            color: white;
+        }
+        
+        .stats-card {
+            border: none;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+        
+        .stats-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-nav {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .admin-nav-link {
+            color: #6c757d;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+        
+        .admin-nav-link:hover, .admin-nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+    
+    <div class="admin-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-2" style="font-family: 'Poppins', sans-serif;">
+                <i class="fas fa-user-shield me-3"></i>Admin Dashboard
+            </h1>
+            <p class="lead">Manage your VocaloCart store</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Admin Navigation -->
+        <div class="admin-nav text-center mb-4">
+            <a href="/admin" class="admin-nav-link active">
+                <i class="fas fa-chart-line me-2"></i>Dashboard
+            </a>
+            <a href="/admin/products" class="admin-nav-link">
+                <i class="fas fa-box me-2"></i>Products
+            </a>
+            <a href="/admin/orders" class="admin-nav-link">
+                <i class="fas fa-shopping-cart me-2"></i>Orders
+            </a>
+            <a href="/admin/categories" class="admin-nav-link">
+                <i class="fas fa-tags me-2"></i>Categories
+            </a>
+        </div>
+        
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2" th:text="${totalProducts}">0</h3>
+                    <p class="text-muted mb-0">Total Products</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2" th:text="${totalOrders}">0</h3>
+                    <p class="text-muted mb-0">Total Orders</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2" th:text="${pendingOrders}">0</h3>
+                    <p class="text-muted mb-0">Pending Orders</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Orders -->
+        <div class="card" style="border: none; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+            <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px 20px 0 0; padding: 1.5rem;">
+                <h5 class="mb-0 fw-bold">
+                    <i class="fas fa-receipt me-2"></i>Recent Orders
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead style="background: #f8f9fa;">
+                            <tr>
+                                <th class="px-4 py-3">Order ID</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${recentOrders}">
+                                <td class="px-4 py-3 fw-bold" th:text="'#' + ${order.id}">#1</td>
+                                <td th:text="${order.user.name}">Customer Name</td>
+                                <td class="fw-bold" style="color: #667eea;" th:text="'$' + ${#numbers.formatDecimal(order.totalAmount, 1, 2)}">$0.00</td>
+                                <td>
+                                    <span class="badge rounded-pill px-3 py-2"
+                                          th:classappend="${order.status.name() == 'PENDING'} ? 'bg-warning' : 
+                                                         ${order.status.name() == 'PROCESSING'} ? 'bg-info' : 
+                                                         ${order.status.name() == 'SHIPPED'} ? 'bg-primary' : 
+                                                         ${order.status.name() == 'DELIVERED'} ? 'bg-success' : 'bg-danger'"
+                                          th:text="${order.status}">Status</span>
+                                </td>
+                                <td th:text="${#temporals.format(order.createdAt, 'MMM dd, yyyy')}">Date</td>
+                                <td>
+                                    <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-sm" 
+                                       style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 8px; font-weight: 600;">
+                                        <i class="fas fa-eye me-1"></i>View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${recentOrders.empty}">
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                    No recent orders
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

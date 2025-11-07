@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>403 - Access Denied | VocaloCart</title>
+    <style>
+        .error-container {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        
+        .error-content {
+            max-width: 600px;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+            animation: fadeInDown 0.6s ease;
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+        
+        .error-message {
+            font-size: 1.125rem;
+            color: #718096;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease 0.6s both;
+        }
+        
+        .error-btn {
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .error-btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .error-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.3);
+            color: white;
+        }
+        
+        .error-btn-secondary {
+            background: white;
+            color: #f5576c;
+            border: 2px solid #f5576c;
+        }
+        
+        .error-btn-secondary:hover {
+            background: #f5576c;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .error-illustration {
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .error-illustration svg {
+            width: 200px;
+            height: 200px;
+            opacity: 0.8;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="error-container">
+    <div class="error-content">
+        <div class="error-illustration">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #f5576c;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+        </div>
+        <h1 class="error-code">403</h1>
+        <h2 class="error-title">Access Denied</h2>
+        <p class="error-message">You don't have permission to access this resource. This area is restricted to authorized users only.</p>
+        <div class="error-actions">
+            <a href="/" class="error-btn error-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                </svg>
+                Back to Home
+            </a>
+            <a href="/login" class="error-btn error-btn-secondary">
+                Login
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

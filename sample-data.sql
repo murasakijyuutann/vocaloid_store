@@ -5,21 +5,22 @@
 -- USERS (Passwords are BCrypt encoded: all passwords are "password123")
 -- =====================================================
 
-INSERT INTO users (name, email, password, phone_number, role, created_at, updated_at) VALUES
-('Alice Johnson', 'alice@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '010-1234-5678', 'CUSTOMER', NOW(), NOW()),
-('Bob Smith', 'bob@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '010-2345-6789', 'CUSTOMER', NOW(), NOW()),
-('Carol White', 'carol@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '010-3456-7890', 'CUSTOMER', NOW(), NOW()),
-('Admin User', 'admin@vocalocart.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '010-9999-0000', 'ADMIN', NOW(), NOW());
+INSERT INTO users (email, password, name, phone, address, role, created_at, updated_at) VALUES
+('admin@vocalocart.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Admin User', '010-0000-0000', '1 Admin Street, Seoul', 'ADMIN', NOW(), NOW()),
+('alice@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Alice Johnson', '010-1234-5678', '123 Gangnam Street, Seoul', 'USER', NOW(), NOW()),
+('bob@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Bob Smith', '010-2345-6789', '456 Hongdae Avenue, Seoul', 'USER', NOW(), NOW()),
+('carol@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Carol White', '010-3456-7890', '789 Myeongdong Road, Seoul', 'USER', NOW(), NOW()),
+('david@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'David Lee', '010-4567-8901', '321 Itaewon Street, Seoul', 'USER', NOW(), NOW());
 
 -- =====================================================
 -- ADDRESSES
 -- =====================================================
 
 INSERT INTO addresses (user_id, recipient_name, phone_number, address_line1, address_line2, city, state, postal_code, country, is_default, created_at, updated_at) VALUES
-(1, 'Alice Johnson', '010-1234-5678', '123 Gangnam-daero', 'Apt 101', 'Seoul', 'Gangnam-gu', '06000', 'South Korea', true, NOW(), NOW()),
-(1, 'Alice Johnson', '010-1234-5678', '456 Teheran-ro', 'Office Building 5F', 'Seoul', 'Gangnam-gu', '06100', 'South Korea', false, NOW(), NOW()),
-(2, 'Bob Smith', '010-2345-6789', '789 Hongdae-gil', 'Studio 202', 'Seoul', 'Mapo-gu', '04000', 'South Korea', true, NOW(), NOW()),
-(3, 'Carol White', '010-3456-7890', '321 Myeongdong-gil', 'Villa 301', 'Seoul', 'Jung-gu', '04500', 'South Korea', true, NOW(), NOW());
+(2, 'Alice Johnson', '010-1234-5678', '123 Gangnam-daero', 'Apt 101', 'Seoul', 'Gangnam-gu', '06000', 'South Korea', true, NOW(), NOW()),
+(2, 'Alice Johnson', '010-1234-5678', '456 Teheran-ro', 'Office Building 5F', 'Seoul', 'Gangnam-gu', '06100', 'South Korea', false, NOW(), NOW()),
+(3, 'Bob Smith', '010-2345-6789', '789 Hongdae-gil', 'Studio 202', 'Seoul', 'Mapo-gu', '04000', 'South Korea', true, NOW(), NOW()),
+(4, 'Carol White', '010-3456-7890', '321 Myeongdong-gil', 'Villa 301', 'Seoul', 'Jung-gu', '04500', 'South Korea', true, NOW(), NOW());
 
 -- =====================================================
 -- CATEGORIES

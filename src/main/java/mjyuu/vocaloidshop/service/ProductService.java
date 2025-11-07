@@ -46,6 +46,11 @@ public class ProductService {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", productId));
     }
+    
+    @Transactional(readOnly = true)
+    public Product getProductById(Long productId) {
+        return getProduct(productId);
+    }
 
     @Transactional(readOnly = true)
     public List<Product> getProductsByCategory(Long categoryId) {
