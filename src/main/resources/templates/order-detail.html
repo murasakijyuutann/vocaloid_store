@@ -31,8 +31,7 @@
                                    <span th:text="${#temporals.format(order.orderedAt, 'MMM dd, yyyy HH:mm')}">Date</span></p>
                                 <p><strong>Status:</strong> 
                                    <span class="badge" 
-                                         th:classappend="${order.status == T(mjyuu.vocaloidshop.entity.OrderStatus).DELIVERED} ? 'bg-success' : 
-                                                          ${order.status == T(mjyuu.vocaloidshop.entity.OrderStatus).CANCELED} ? 'bg-danger' : 'bg-warning'"
+                                         th:classappend="${order.status.name() == 'DELIVERED'} ? 'bg-success' : (${order.status.name() == 'CANCELED'} ? 'bg-danger' : 'bg-warning')"
                                          th:text="${order.status}">Status</span></p>
                             </div>
                             <div class="col-md-6">
