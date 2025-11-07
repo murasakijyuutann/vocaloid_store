@@ -29,10 +29,10 @@
                             <div class="col-md-6">
                                 <p><strong>Order Date:</strong> 
                                    <span th:text="${#temporals.format(order.orderedAt, 'MMM dd, yyyy HH:mm')}">Date</span></p>
-                                <p><strong>Status:</strong> 
-                                   <span class="badge" 
-                                         th:classappend="${order.status.name() == 'DELIVERED'} ? 'bg-success' : (${order.status.name() == 'CANCELED'} ? 'bg-danger' : 'bg-warning')"
-                                         th:text="${order.status}">Status</span></p>
+                      <p><strong>Status:</strong> 
+                         <span class="badge" 
+                             th:classappend="${order.status.name() == 'DELIVERED' ? 'bg-success' : (order.status.name() == 'CANCELED' ? 'bg-danger' : 'bg-warning')}"
+                             th:text="${order.status}">Status</span></p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Total Amount:</strong> 

@@ -199,9 +199,9 @@
                     <div class="img-wrapper">
                         <img th:src="${product.imageUrl}" alt="Product Image"
                              onerror="this.src='https://via.placeholder.com/400x400/4facfe/ffffff?text=VocaloCart'">
-                        <span class="stock-badge" th:classappend="${product.stockQuantity > 0} ? 'text-success' : 'text-danger'">
+                        <span class="stock-badge" th:classappend="${product.stockQuantity > 0 ? 'text-success' : 'text-danger'}">
                             <i class="fas fa-box me-1"></i>
-                            <span th:text="${product.stockQuantity > 0} ? ${product.stockQuantity} + ' in stock' : 'Out of stock'">Stock</span>
+                            <span th:text="${product.stockQuantity > 0 ? product.stockQuantity + ' in stock' : 'Out of stock'}">Stock</span>
                         </span>
                         <div class="product-overlay">
                             <a th:href="@{/products/{id}(id=${product.id})}" class="btn quick-view-btn">

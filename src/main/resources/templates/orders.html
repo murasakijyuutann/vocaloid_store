@@ -25,9 +25,9 @@
                             </small>
                         </div>
                         <div class="col-md-3">
-                            <span class="badge" 
-                                  th:classappend="${order.status.name() == 'DELIVERED'} ? 'bg-success' : (${order.status.name() == 'CANCELED'} ? 'bg-danger' : 'bg-warning')"
-                                  th:text="${order.status}">Status</span>
+                    <span class="badge" 
+                        th:classappend="${order.status.name() == 'DELIVERED' ? 'bg-success' : (order.status.name() == 'CANCELED' ? 'bg-danger' : 'bg-warning')}"
+                        th:text="${order.status}">Status</span>
                         </div>
                         <div class="col-md-3 text-end">
                             <strong class="text-primary" th:text="'¥' + ${#numbers.formatInteger(order.totalAmount, 1, 'COMMA')}">¥0</strong>
