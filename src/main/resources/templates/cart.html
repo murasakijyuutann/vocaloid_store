@@ -140,7 +140,7 @@
                                 <div class="col-md-4 mb-3 mb-md-0">
                                     <h5 class="fw-bold mb-2" th:text="${item.product.name}">Product Name</h5>
                                     <p class="text-muted mb-1">
-                                        <span style="font-weight: 600; color: #667eea;" th:text="'$' + ${#numbers.formatDecimal(item.priceInDollars, 1, 2)}">$0.00</span>
+                                        <span style="font-weight: 600; color: #667eea;" th:text="'¥' + ${#numbers.formatInteger(item.price, 1, 'COMMA')}">¥0</span>
                                         <span class="text-muted small"> per item</span>
                                     </p>
                                 </div>
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="col-md-2 text-center mb-3 mb-md-0">
                                     <div class="fw-bold" style="font-size: 1.2rem; color: #667eea;" 
-                                         th:text="'$' + ${#numbers.formatDecimal(item.subtotalInDollars, 1, 2)}">$0.00</div>
+                                         th:text="'¥' + ${#numbers.formatInteger(item.price * item.quantity, 1, 'COMMA')}">¥0</div>
                                     <small class="text-muted">Total</small>
                                 </div>
                                 <div class="col-md-1 text-end">
@@ -184,7 +184,7 @@
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                                 <span class="text-muted">Subtotal:</span>
-                                <strong style="font-size: 1.1rem;" th:text="'$' + ${#numbers.formatDecimal(cartTotal, 1, 2)}">$0.00</strong>
+                                <strong style="font-size: 1.1rem;" th:text="'¥' + ${#numbers.formatInteger(cartTotal, 1, 'COMMA')}">¥0</strong>
                             </div>
                             <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                                 <span class="text-muted">Shipping:</span>
@@ -194,7 +194,7 @@
                                 <strong style="font-size: 1.2rem;">Total:</strong>
                                 <strong class="h4 mb-0" 
                                         style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" 
-                                        th:text="'$' + ${#numbers.formatDecimal(cartTotal, 1, 2)}">$0.00</strong>
+                                        th:text="'¥' + ${#numbers.formatInteger(cartTotal, 1, 'COMMA')}">¥0</strong>
                             </div>
                             <a th:href="@{/checkout}" class="btn btn-primary checkout-btn w-100 mb-3">
                                 <i class="fas fa-lock me-2"></i>Secure Checkout
